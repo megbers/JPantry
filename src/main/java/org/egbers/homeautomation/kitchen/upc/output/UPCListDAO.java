@@ -7,5 +7,5 @@ public interface UPCListDAO {
 
 	public String read() throws Exception;
 
-	public void reset();
+	public void reset() throws Exception;
 }

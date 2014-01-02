@@ -1,0 +1,19 @@
+----------------------------------------------------------------
+Thu Jan 02 11:24:35 EST 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.1 - (1458268): instance a816c00e-0143-53c5-4af9-0000000d2fa8 
+on database directory memory:C:\Users\U23773\IBM\rationalsdp\workspace\JPantry\dataSource with class loader sun.misc.Launcher$AppClassLoader@5c2e80c5 
+Loaded from file:/C:/Users/U23773/.m2/repository/org/apache/derby/derby/10.10.1.1/derby-10.10.1.1.jar
+java.vendor=IBM Corporation
+java.runtime.version=pwi3270sr1-20120405_01 (SR1)
+java.fullversion=JRE 1.7.0 IBM J9 2.6 Windows 7 x86-32 20120322_106209 (JIT enabled, AOT enabled)
+J9VM - R26_Java726_SR1_20120322_1720_B106209
+JIT  - r11_20120322_22976
+GC   - R26_Java726_SR1_20120322_1720_B106209
+J9CL - 20120322_106209
+user.dir=C:\Users\U23773\IBM\rationalsdp\workspace\JPantry
+os.name=Windows 7
+os.arch=x86
+os.version=6.1
+derby.system.home=null
+derby.stream.error.method=org.springframework.jdbc.datasource.embedded.OutputStreamFactory.getNoopOutputStream
+Database Class Loader started - derby.database.classpath=''

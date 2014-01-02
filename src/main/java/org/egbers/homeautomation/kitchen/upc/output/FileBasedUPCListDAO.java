@@ -28,9 +28,8 @@ public class FileBasedUPCListDAO implements UPCListDAO {
 		return buffer.toString();
 	}
 
-	public void reset() {
+	public void reset() throws Exception {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Value("#{properties.listFileName}")

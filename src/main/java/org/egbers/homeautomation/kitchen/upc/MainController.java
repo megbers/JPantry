@@ -2,6 +2,8 @@ package org.egbers.homeautomation.kitchen.upc;
 
 import java.util.Scanner;
 
+import javax.sql.DataSource;
+
 import org.codehaus.jettison.json.JSONObject;
 import org.egbers.homeautomation.kitchen.upc.output.UPCListDAO;
 import org.springframework.context.ApplicationContext;
@@ -12,7 +14,13 @@ public class MainController {
 	public static void main(final String[] args) throws Exception {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		ConnectionService service = (ConnectionService) context.getBean("upcDatabaseConnectionService");
-		UPCListDAO fileDAO = (UPCListDAO) context.getBean("fileBasedUPCListDAO");
+		context.getBean("fileBasedUPCListDAO");
+
+		DataSource dataSource = (DataSource) context.getBean("dataSource");
+		System.out.println(dataSource);
+
+		UPCListDAO derbyBasedUPCListDAO = (UPCListDAO) context.getBean("derbyBasedUPCListDAO");
+		System.out.println(derbyBasedUPCListDAO);
 
 		// UPCLookUpGUI gui = new UPCLookUpGUI();
 		//
@@ -28,6 +36,8 @@ public class MainController {
 		// }
 		// }
 
+		UPCListDAO upcListDAO = derbyBasedUPCListDAO;
+
 		String upc = "";
 		while (true && !"exit".equalsIgnoreCase(upc)) {
 			// "0028400034715"
@@ -38,14 +48,14 @@ public class MainController {
 			JSONObject product = service.lookUpUPC(upc);
 			if (product.optBoolean("valid")) {
 				System.out.println("Valid UPC");
-				fileDAO.write(product);
+				upcListDAO.write(product);
 			} else {
 				System.out.println("Invalid UPC");
 			}
 			System.out.println(product.toString());
 		}
 
-		System.out.println(fileDAO.read());
+		System.out.println(upcListDAO.read());
 
 	}
 
