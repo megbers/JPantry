@@ -19,7 +19,7 @@ public class UPCDatabaseConnectionService implements ConnectionService {
 		System.setProperty("http.proxyHost", "proxycorp1v.dteco.com");
 		System.setProperty("http.proxyPort", "8080");
 		System.setProperty("http.proxyUser", "megbers");
-		System.setProperty("http.proxyPassword", "e8XKWB11");
+		System.setProperty("http.proxyPassword", "");
 
 		try {
 

@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import org.codehaus.jettison.json.JSONObject;
+import org.egbers.homeautomation.kitchen.upc.domain.Item;
 import org.springframework.beans.factory.annotation.Value;
 
 public class FileBasedUPCListDAO implements UPCListDAO {
@@ -39,4 +40,10 @@ public class FileBasedUPCListDAO implements UPCListDAO {
 		fileIn = new FileReader(this.fileName);
 	}
 
+	public Item find(String upcCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 }

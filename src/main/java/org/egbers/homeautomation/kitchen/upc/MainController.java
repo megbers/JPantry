@@ -39,10 +39,10 @@ public class MainController {
 		UPCListDAO upcListDAO = derbyBasedUPCListDAO;
 
 		String upc = "";
+		Scanner scanner = new Scanner(System.in);
 		while (true && !"exit".equalsIgnoreCase(upc)) {
 			// "0028400034715"
 			System.out.print("Please Enter a UPC: ");
-			Scanner scanner = new Scanner(System.in);
 			upc = scanner.nextLine();
 
 			JSONObject product = service.lookUpUPC(upc);
@@ -54,7 +54,7 @@ public class MainController {
 			}
 			System.out.println(product.toString());
 		}
-
+		scanner.close();
 		System.out.println(upcListDAO.read());
 
 	}

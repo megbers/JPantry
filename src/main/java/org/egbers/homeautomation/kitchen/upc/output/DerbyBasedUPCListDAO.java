@@ -7,6 +7,7 @@ import java.sql.Statement;
 import javax.sql.DataSource;
 
 import org.codehaus.jettison.json.JSONObject;
+import org.egbers.homeautomation.kitchen.upc.domain.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class DerbyBasedUPCListDAO implements UPCListDAO {
@@ -67,6 +68,11 @@ public class DerbyBasedUPCListDAO implements UPCListDAO {
 	@Autowired
 	public void setDataSource(final DataSource dataSource) {
 		this.dataSource = dataSource;
+	}
+
+	public Item find(String upcCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
