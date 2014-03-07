@@ -4,23 +4,27 @@ import java.util.Scanner;
 
 import javax.sql.DataSource;
 
-import org.codehaus.jettison.json.JSONObject;
+import org.apache.log4j.Logger;
+import org.egbers.homeautomation.kitchen.upc.dao.ItemExternalDAO;
+import org.egbers.homeautomation.kitchen.upc.domain.Item;
 import org.egbers.homeautomation.kitchen.upc.output.UPCListDAO;
+import org.egbers.homeautomation.kitchen.upc.service.ItemLookUpService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class MainController {
-
+	static Logger LOG = Logger.getLogger(MainController.class.getName());
+	
 	public static void main(final String[] args) throws Exception {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		ConnectionService service = (ConnectionService) context.getBean("upcDatabaseConnectionService");
+		ItemLookUpService service = (ItemLookUpService) context.getBean("itemLookUpService");
 		context.getBean("fileBasedUPCListDAO");
 
 		DataSource dataSource = (DataSource) context.getBean("dataSource");
-		System.out.println(dataSource);
+		LOG.warn(dataSource);
 
 		UPCListDAO derbyBasedUPCListDAO = (UPCListDAO) context.getBean("derbyBasedUPCListDAO");
-		System.out.println(derbyBasedUPCListDAO);
+		LOG.warn(derbyBasedUPCListDAO);
 
 		// UPCLookUpGUI gui = new UPCLookUpGUI();
 		//
@@ -45,17 +49,18 @@ public class MainController {
 			System.out.print("Please Enter a UPC: ");
 			upc = scanner.nextLine();
 
-			JSONObject product = service.lookUpUPC(upc);
-			if (product.optBoolean("valid")) {
-				System.out.println("Valid UPC");
-				upcListDAO.write(product);
+			Item item = service.findItemByUPC(upc);
+			if (item != null) {
+				LOG.warn("Valid UPC");
+				//upcListDAO.write(product);
+				LOG.warn(item.getUpc()+":"+item.getName()+":"+item.getDescription());
 			} else {
-				System.out.println("Invalid UPC");
+				LOG.warn("Invalid UPC");
 			}
-			System.out.println(product.toString());
+			
 		}
 		scanner.close();
-		System.out.println(upcListDAO.read());
+		LOG.warn(upcListDAO.read());
 
 	}
 

@@ -20,24 +20,11 @@
 	<context:component-scan base-package="org.egbers" />
 	<context:annotation-config />
 	
+	<context:property-placeholder location="application.properties" />
 	<util:properties id="properties" location="classpath:application.properties"/>
 	
-	<jdbc:embedded-database id="dataSourceDerby" type="DERBY">
-   		<jdbc:script location="classpath:tables.sql"/>
-	</jdbc:embedded-database>
+	<import resource="applicationContext-dataSource.xml"/>
+	<import resource="applicationContext-sessionFactory.xml"/>
+	<import resource="applicationContext-services.xml"/>
 	
-	<bean id="dataSourceMySQL" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/landlord" />
-		<property name="username" value="root" />
-		<property name="password" value="password" />
-		<property name="validationQuery" value="SELECT 1+1" />
-		<property name="testOnBorrow" value="true" />
-	</bean>
-	
-	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
-	
-	<bean id="upcDatabaseConnectionService" class="org.egbers.homeautomation.kitchen.upc.UPCDatabaseConnectionService"/>
-    <bean id="fileBasedUPCListDAO" class="org.egbers.homeautomation.kitchen.upc.output.FileBasedUPCListDAO"/>    
-    <bean id="derbyBasedUPCListDAO" class="org.egbers.homeautomation.kitchen.upc.output.DerbyBasedUPCListDAO"/>
 </beans>        
