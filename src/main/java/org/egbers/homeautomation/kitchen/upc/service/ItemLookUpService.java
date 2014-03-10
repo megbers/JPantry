@@ -15,6 +15,14 @@ public class ItemLookUpService {
 		Item item = itemLocalDAO.findByUPC(upcCode);
 		if(item == null) {
 			item = itemExternalDAO.findByUPC(upcCode);
+			item = saveItem(item);
+		}
+		return item;
+	}
+	
+	public Item saveItem(Item item) {
+		if(item != null) {
+			item = itemLocalDAO.save(item);
 		}
 		return item;
 	}

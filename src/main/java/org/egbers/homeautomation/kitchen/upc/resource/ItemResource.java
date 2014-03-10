@@ -11,18 +11,27 @@ import javax.ws.rs.core.Response.Status;
 
 import org.codehaus.jettison.json.JSONException;
 import org.egbers.homeautomation.kitchen.upc.domain.Item;
+import org.egbers.homeautomation.kitchen.upc.service.ItemLookUpService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 @Path("item")
 public class ItemResource {
 
+	@Autowired
+	private ItemLookUpService itemLookUpService;
+	
 	@GET
-	@Path("/{upcCode}/")
+	@Path("/find/{upcCode}")
 	@Produces(APPLICATION_JSON)
-	public Response turnOn(@PathParam("upcCode") String upcCode) throws JSONException {
+	public Response findByUPC(@PathParam("upcCode") String upcCode) throws JSONException {
 		Item item = new Item();
 		return Response.status(Status.OK).entity(item).build();
+	}
+
+	public void setItemLookUpService(ItemLookUpService itemLookUpService) {
+		this.itemLookUpService = itemLookUpService;
 	}
 	
 }

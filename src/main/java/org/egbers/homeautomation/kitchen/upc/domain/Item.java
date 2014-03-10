@@ -20,6 +20,8 @@ public class Item {
 	private String upc;
 	private String name;
 	private String description;
+	private Integer quantity;
+	private Boolean onList;
 
 	@GenericGenerator(name = "generator", strategy = "increment")
 	@Id
@@ -60,4 +62,22 @@ public class Item {
 		this.description = description;
 	}
 
+	@Column(name = "quantity")
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+	
+	@Column(name = "on_list")
+	public Boolean getOnList() {
+		return onList;
+	}
+
+	public void setOnList(Boolean onList) {
+		this.onList = onList;
+	}
+	
 }

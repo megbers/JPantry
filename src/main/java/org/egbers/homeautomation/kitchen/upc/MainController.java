@@ -5,7 +5,6 @@ import java.util.Scanner;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
-import org.egbers.homeautomation.kitchen.upc.dao.ItemExternalDAO;
 import org.egbers.homeautomation.kitchen.upc.domain.Item;
 import org.egbers.homeautomation.kitchen.upc.output.UPCListDAO;
 import org.egbers.homeautomation.kitchen.upc.service.ItemLookUpService;
@@ -15,6 +14,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class MainController {
 	static Logger LOG = Logger.getLogger(MainController.class.getName());
 	
+	@SuppressWarnings("resource")
 	public static void main(final String[] args) throws Exception {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		ItemLookUpService service = (ItemLookUpService) context.getBean("itemLookUpService");

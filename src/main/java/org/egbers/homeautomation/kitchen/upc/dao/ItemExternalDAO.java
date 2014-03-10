@@ -3,7 +3,6 @@ package org.egbers.homeautomation.kitchen.upc.dao;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
@@ -71,7 +70,9 @@ public class ItemExternalDAO {
 	}
 
 	//TODO Remove this is only here for reference in case we need this elsewhere
+	@SuppressWarnings("unused")
 	private String apiKey;
+	@SuppressWarnings("unused")
 	private String apiUrl;
 	
 	@Value("#{properties.apiKey}")
