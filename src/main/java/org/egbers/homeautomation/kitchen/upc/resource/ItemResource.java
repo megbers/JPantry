@@ -26,8 +26,9 @@ public class ItemResource {
 	@Path("/find/{upcCode}")
 	@Produces(APPLICATION_JSON)
 	public Response findByUPC(@PathParam("upcCode") String upcCode) throws JSONException {
-		Item item = new Item();
-		return Response.status(Status.OK).entity(item).build();
+		//TODO PLEASE TEST ASAP
+		Item item = itemLookUpService.findItemByUPC(upcCode);
+		return Response.status(Status.OK).type(APPLICATION_JSON).entity(item).build();
 	}
 
 	public void setItemLookUpService(ItemLookUpService itemLookUpService) {
