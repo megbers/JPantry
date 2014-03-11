@@ -1,12 +1,48 @@
-<html>
+<html lang="en" ng-app="jPantry">
 	<head>
-		<title>
-			JPantry - Index.html
-		</title>
+		<meta charset="utf-8">
+  		<title>JPantry</title>
+  		<link rel="stylesheet" href="css/main.css">
+  		<script src="js/jquery/jquery-1.11.0.min.js"></script>
+  		<script src="js/angularjs/angular.min.js"></script>
+  		<script src="js/angularjs/angular-resource.min.js"></script>
+  		<script src="js/jpantry/jpantry.js"></script>
 	</head>
 	<body>
-		<h1>
-			Hello World
-		</h1>
+		<div ng-controller="jPantryCntrl">
+			<form>
+				<label for="inScanType">In</label>
+				<input type="radio" id="inScanType" ng-model="scanType" value="in"><br>
+				<label for="outScanType">Out</label>
+				<input type="radio" id="outScanType" ng-model="scanType" value="out"><br>
+				<label for="lookUpScanType">Look Up</label>
+				<input type="radio" id="lookUpScanType" ng-model="scanType" value="lookup"><br>
+				
+				<label for="upcCodeTextField">UPC Code</label>
+				<input type="text" name="upcCode" id="upcCodeTextField" ng-model="upcCode" ng-keypress="upcCodeKeyPress($event)" /><br>
+				<label for="quantityTextField">Quantity</label>
+				<input type="text" name="quantity" id="quantityTextField" ng-model="quantity" ng-keypress="quantityKeyPress($event)" /><br>
+			</form>
+			<div>
+				<table>
+					<tr>
+						<th>Id</th>
+						<th>UPC</th>
+						<th>Name</th>
+						<th>Description</th>
+						<th>On List</th>
+						<th>Quantity</th>
+					</tr>
+					<tr>
+						<td>{{item.id}}</td>
+						<td>{{item.upc}}</td>
+						<td>{{item.name}}</td>
+						<td>{{item.description}}</td>
+						<td>{{item.onList}}</td>
+						<td>{{item.quantity}}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
 	</body>
 </html>
