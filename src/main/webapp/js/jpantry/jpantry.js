@@ -35,9 +35,19 @@ function($scope, jPantryLookUpService, jPantryItemIntake, jPantryItemOutbound) {
 			
 }]);
 
+jPantry.controller('jPantryInventoryListCntrl', ['$scope', 'jPantryInventoryListService',
+function($scope, jPantryInventoryListService) {
+	$scope.inventoryList = jPantryInventoryListService.query({});
+}]);
+
 jPantry.controller('jPantryShoppingListCntrl', ['$scope', 'jPantryShoppingListService',
 function($scope, jPantryShoppingListService) {
-	$scope.shoppingList = jPantryShoppingListService.get({});
+	$scope.shoppingList = jPantryShoppingListService.query({});
+}]);
+
+jPantry.controller('jPantryAllListCntrl', ['$scope', 'jPantryAllListService',
+function($scope, jPantryAllListService) {
+	$scope.allList = jPantryAllListService.query({});
 }]);
 
 var jPantryService = angular.module('jPantryService', ['ngResource']);
@@ -56,4 +66,12 @@ jPantryService.factory('jPantryItemOutbound', ['$resource', function($resource) 
 
 jPantryService.factory('jPantryShoppingListService', ['$resource', function($resource) {
 	return $resource('/JPantry/rest/item/find/shopping', {});
+}]);
+
+jPantryService.factory('jPantryInventoryListService', ['$resource', function($resource) {
+	return $resource('/JPantry/rest/item/find/inventory', {});
+}]);
+
+jPantryService.factory('jPantryAllListService', ['$resource', function($resource) {
+	return $resource('/JPantry/rest/item/find/all', {});
 }]);

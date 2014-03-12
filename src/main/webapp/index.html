@@ -51,7 +51,23 @@
 		<div ng-controller="jPantryShoppingListCntrl">
 			<ul>
 				<li ng-repeat="shoppingItem in shoppingList">
-			    	{{shoppingItem.id}} - {{shoppingItem.upcCode}} - {{shoppingItem.name}}
+			    	{{shoppingItem.id}} - {{shoppingItem.upc}} - {{shoppingItem.name}} 
+				</li>
+			</ul>
+		</div>
+		
+		<div ng-controller="jPantryInventoryListCntrl">
+			<ul>
+				<li ng-repeat="inventoryItem in inventoryList">
+			    	{{inventoryItem.id}} - {{inventoryItem.upc}} - {{inventoryItem.name}}
+				</li>
+			</ul>
+		</div>
+		
+		<div ng-controller="jPantryAllListCntrl">
+			<ul>
+				<li ng-repeat="allItem in allList">
+			    	{{allItem.id}} - {{allItem.upc}} - {{allItem.name}}
 				</li>
 			</ul>
 		</div>
