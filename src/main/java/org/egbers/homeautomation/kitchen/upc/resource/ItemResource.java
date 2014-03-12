@@ -26,11 +26,27 @@ public class ItemResource {
 	@Path("/find/{upcCode}")
 	@Produces(APPLICATION_JSON)
 	public Response findByUPC(@PathParam("upcCode") String upcCode) throws JSONException {
-		//TODO PLEASE TEST ASAP
 		Item item = itemLookUpService.findItemByUPC(upcCode);
 		return Response.status(Status.OK).type(APPLICATION_JSON).entity(item).build();
 	}
-
+	
+	@GET
+	@Path("/in/{upcCode}/{quantity}")
+	@Produces(APPLICATION_JSON)
+	public Response itemIntake(@PathParam("upcCode") String upcCode, @PathParam("quantity") Integer quantity) {
+		Item item = itemLookUpService.itemIntake(upcCode, quantity);
+		return Response.status(Status.OK).type(APPLICATION_JSON).entity(item).build();
+	}
+	
+	@GET
+	@Path("/out/{upcCode}/{quantity}")
+	@Produces(APPLICATION_JSON)
+	public Response itemOutbound(@PathParam("upcCode") String upcCode, @PathParam("quantity") Integer quantity) {
+		Item item = itemLookUpService.itemOutbound(upcCode, quantity);
+		return Response.status(Status.OK).type(APPLICATION_JSON).entity(item).build();
+	}
+	
+	
 	public void setItemLookUpService(ItemLookUpService itemLookUpService) {
 		this.itemLookUpService = itemLookUpService;
 	}

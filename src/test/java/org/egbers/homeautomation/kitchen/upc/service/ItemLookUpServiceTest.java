@@ -26,11 +26,13 @@ public class ItemLookUpServiceTest {
 	private ItemLookUpService service;
 	private String upcCode;
 	private Item item;
+	private Integer quantity;
 	
 	@Before
 	public void setUp() {
 		upcCode = "UPC Code";
 		item = new Item();
+		quantity = 0;
 	}
 	
 	@Test
@@ -90,5 +92,79 @@ public class ItemLookUpServiceTest {
 		
 		verify(itemLocalDAO).save(item);
 		assertEquals(item, actual);
+	}
+	
+	@Test
+	public void itemIntakeShouldUpdateQuantityWhenNonZero() {
+		item.setQuantity(0);
+		quantity = 1;
+		when(itemLocalDAO.findByUPC(upcCode)).thenReturn(item);
+		when(itemLocalDAO.save(item)).thenReturn(item);
+		
+		Item actual = service.itemIntake(upcCode, quantity);
+		
+		assertEquals(new Integer(1), actual.getQuantity());
+	}
+	
+	@Test
+	public void itemIntakeShouldAddToExistingQuantity() {
+		item.setQuantity(100);
+		quantity = 57;
+		when(itemLocalDAO.findByUPC(upcCode)).thenReturn(item);
+		when(itemLocalDAO.save(item)).thenReturn(item);
+		
+		Item actual = service.itemIntake(upcCode, quantity);
+		
+		assertEquals(new Integer(157), actual.getQuantity());
+	}
+	
+	@Test
+	public void itemIntakeShouldNotThrowExceptionWhenItemQuantityIsNull() {
+		item.setQuantity(null);
+		quantity = 10;
+		when(itemLocalDAO.findByUPC(upcCode)).thenReturn(item);
+		when(itemLocalDAO.save(item)).thenReturn(item);
+		
+		Item actual = service.itemIntake(upcCode, quantity);
+		
+		assertEquals(new Integer(10), actual.getQuantity());
+	}
+	
+	
+	
+	@Test
+	public void itemOutboundShouldUpdateQuantityWhenNonZero() {
+		item.setQuantity(2);
+		quantity = 1;
+		when(itemLocalDAO.findByUPC(upcCode)).thenReturn(item);
+		when(itemLocalDAO.save(item)).thenReturn(item);
+		
+		Item actual = service.itemOutbound(upcCode, quantity);
+		
+		assertEquals(new Integer(1), actual.getQuantity());
+	}
+	
+	@Test
+	public void itemOutboundShouldSetToZeroWhenNegitive() {
+		item.setQuantity(57);
+		quantity = 100;
+		when(itemLocalDAO.findByUPC(upcCode)).thenReturn(item);
+		when(itemLocalDAO.save(item)).thenReturn(item);
+		
+		Item actual = service.itemOutbound(upcCode, quantity);
+		
+		assertEquals(new Integer(0), actual.getQuantity());
+	}
+	 
+	@Test
+	public void itemIntakeShouldSetToZeroWhenItemQuantityIsNull() {
+		item.setQuantity(null);
+		quantity = 10;
+		when(itemLocalDAO.findByUPC(upcCode)).thenReturn(item);
+		when(itemLocalDAO.save(item)).thenReturn(item);
+		
+		Item actual = service.itemOutbound(upcCode, quantity);
+		
+		assertEquals(new Integer(0), actual.getQuantity());
 	}
 }

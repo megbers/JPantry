@@ -104,7 +104,7 @@ public class ItemLocalDAOTest {
 	}
 
 	@Test
-	public void findAllShouldFindNotes() {
+	public void findAllShouldFindItems() {
 		List<Item> list = new ArrayList<Item>();
 		when(template.find("from org.egbers.homeautomation.kitchen.upc.domain.Item")).thenReturn(list);
 		List<Item> actual = dao.findAll();
