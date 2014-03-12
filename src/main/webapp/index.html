@@ -12,16 +12,19 @@
 		<div ng-controller="jPantryCntrl">
 			<form>
 				<label for="inScanType">In</label>
-				<input type="radio" id="inScanType" ng-model="scanType" value="in"><br>
+				<input type="radio" id="inScanType" ng-model="scanType" value="in" /><br>
 				<label for="outScanType">Out</label>
-				<input type="radio" id="outScanType" ng-model="scanType" value="out"><br>
+				<input type="radio" id="outScanType" ng-model="scanType" value="out" /><br>
 				<label for="lookUpScanType">Look Up</label>
-				<input type="radio" id="lookUpScanType" ng-model="scanType" value="lookup"><br>
+				<input type="radio" id="lookUpScanType" ng-model="scanType" value="lookup" checked="true" /><br>
 				
 				<label for="upcCodeTextField">UPC Code</label>
 				<input type="text" name="upcCode" id="upcCodeTextField" ng-model="upcCode" ng-keypress="upcCodeKeyPress($event)" /><br>
-				<label for="quantityTextField">Quantity</label>
-				<input type="text" name="quantity" id="quantityTextField" ng-model="quantity" ng-keypress="quantityKeyPress($event)" /><br>
+				
+				<div class="quantityFormRow">
+					<label for="quantityTextField">Quantity</label>
+					<input type="text" name="quantity" id="quantityTextField" ng-model="quantity" ng-keypress="quantityKeyPress($event)" value="1" /><br>
+				</div>
 			</form>
 			<div>
 				<table>
