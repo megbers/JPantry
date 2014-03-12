@@ -2,6 +2,8 @@ package org.egbers.homeautomation.kitchen.upc.resource;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -29,6 +31,31 @@ public class ItemResource {
 		Item item = itemLookUpService.findItemByUPC(upcCode);
 		return Response.status(Status.OK).type(APPLICATION_JSON).entity(item).build();
 	}
+	
+	@GET
+	@Path("/find/inventory")
+	@Produces(APPLICATION_JSON)
+	public Response findInventory() throws JSONException {
+		List<Item> items = itemLookUpService.getInventory();
+		return Response.status(Status.OK).type(APPLICATION_JSON).entity(items).build();
+	}
+	
+	@GET
+	@Path("/find/all")
+	@Produces(APPLICATION_JSON)
+	public Response findAll() throws JSONException {
+		List<Item> items = itemLookUpService.getAllItems();
+		return Response.status(Status.OK).type(APPLICATION_JSON).entity(items).build();
+	}
+	
+	@GET
+	@Path("/find/shopping")
+	@Produces(APPLICATION_JSON)
+	public Response findShoppingList() throws JSONException {
+		List<Item> items = itemLookUpService.getShoppingList();
+		return Response.status(Status.OK).type(APPLICATION_JSON).entity(items).build();
+	}
+	
 	
 	@GET
 	@Path("/in/{upcCode}/{quantity}")

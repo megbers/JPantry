@@ -64,4 +64,25 @@ public class ItemLocalDAO extends HibernateDaoSupport{
 			throw re;
 		}
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Item> findCurrentInventory() {
+		try {
+			return getHibernateTemplate().find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.quantity > 0");
+		} catch (RuntimeException re) {
+			throw re;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Item> findCurrentShoppingList() {
+		try {
+			return getHibernateTemplate().find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.onList = true");
+		} catch (RuntimeException re) {
+			throw re;
+		}
+	}
 }

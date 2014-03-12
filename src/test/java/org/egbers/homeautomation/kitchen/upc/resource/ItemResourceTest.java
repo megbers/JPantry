@@ -3,6 +3,9 @@ package org.egbers.homeautomation.kitchen.upc.resource;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.core.Response;
 
 import org.egbers.homeautomation.kitchen.upc.domain.Item;
@@ -23,12 +26,14 @@ public class ItemResourceTest {
 	private String upcCode;
 	private Item item;
 	private Integer quantity;
+	private List<Item> items;
 
 	@Before
 	public void setUp() {
 		upcCode = "1234567890";
 		quantity = 0;
 		item = new Item();
+		items = new ArrayList<Item>();
 	}
 
 	@Test
@@ -81,4 +86,56 @@ public class ItemResourceTest {
 
 		resource.itemOutbound(upcCode, quantity);
 	}
+	
+	@Test
+	public void findInventoryShouldReturnResponse() throws Exception {
+		when(itemLookUpService.getInventory()).thenReturn(items);
+
+		Response response = resource.findInventory();
+
+		assertEquals(items, response.getEntity());
+	}
+
+	// TODO Come up with some good error handling
+	@Test(expected = RuntimeException.class)
+	public void findInventoryShouldThrowExceptionWhenServiceThrowsException() throws Exception {
+		when(itemLookUpService.getInventory()).thenThrow(new RuntimeException());
+
+		resource.findInventory();
+	}
+	
+	@Test
+	public void findAllShouldReturnResponse() throws Exception {
+		when(itemLookUpService.getAllItems()).thenReturn(items);
+
+		Response response = resource.findAll();
+
+		assertEquals(items, response.getEntity());
+	}
+
+	// TODO Come up with some good error handling
+	@Test(expected = RuntimeException.class)
+	public void findAllhouldThrowExceptionWhenServiceThrowsException() throws Exception {
+		when(itemLookUpService.getAllItems()).thenThrow(new RuntimeException());
+
+		resource.findAll();
+	}
+	
+	@Test
+	public void findShoppingListShouldReturnResponse() throws Exception {
+		when(itemLookUpService.getShoppingList()).thenReturn(items);
+
+		Response response = resource.findShoppingList();
+
+		assertEquals(items, response.getEntity());
+	}
+
+	// TODO Come up with some good error handling
+	@Test(expected = RuntimeException.class)
+	public void findShoppingListShouldThrowExceptionWhenServiceThrowsException() throws Exception {
+		when(itemLookUpService.getShoppingList()).thenThrow(new RuntimeException());
+
+		resource.findShoppingList();
+	}
+	
 }

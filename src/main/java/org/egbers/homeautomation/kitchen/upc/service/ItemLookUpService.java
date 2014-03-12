@@ -1,5 +1,7 @@
 package org.egbers.homeautomation.kitchen.upc.service;
 
+import java.util.List;
+
 import org.egbers.homeautomation.kitchen.upc.dao.ItemExternalDAO;
 import org.egbers.homeautomation.kitchen.upc.dao.ItemLocalDAO;
 import org.egbers.homeautomation.kitchen.upc.domain.Item;
@@ -50,5 +52,20 @@ public class ItemLookUpService {
 		item.setQuantity(newQuantity);
 		
 		return saveItem(item);
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
+	public List<Item> getShoppingList() {
+		return itemLocalDAO.findCurrentShoppingList();
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
+	public List<Item> getInventory() {
+		return itemLocalDAO.findCurrentInventory();
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
+	public List<Item> getAllItems() {
+		return itemLocalDAO.findAll();
 	}
 }

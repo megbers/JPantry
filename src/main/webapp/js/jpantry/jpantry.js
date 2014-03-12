@@ -1,14 +1,14 @@
-var jPantry = angular.module('jPantry', ['ngResource', 'jpantryLookUpService']);
+var jPantry = angular.module('jPantry', ['ngResource', 'jPantryService']);
 
-jPantry.controller('jPantryCntrl', ['$scope', 'jPantryService', 'jPantryItemIntake', 'jPantryItemOutbound', 
-function($scope, jPantryService, jPantryItemIntake, jPantryItemOutbound) {
+jPantry.controller('jPantryCntrl', ['$scope', 'jPantryLookUpService', 'jPantryItemIntake', 'jPantryItemOutbound', 
+function($scope, jPantryLookUpService, jPantryItemIntake, jPantryItemOutbound) {
 	
 	var quantityTextField = angular.element('#quantityTextField');
 	
 	$scope.upcCodeKeyPress = function(event) {
 		if (event.which==13) {
     		if($scope.scanType == 'lookup') {
-				$scope.item = jPantryService.get({upcCode: $scope.upcCode});
+				$scope.item = jPantryLookUpService.get({upcCode: $scope.upcCode});
 			} else {
 				quantityTextField.focus();
 			}
@@ -35,16 +35,25 @@ function($scope, jPantryService, jPantryItemIntake, jPantryItemOutbound) {
 			
 }]);
 
-var jpantryLookUpService = angular.module('jpantryLookUpService', ['ngResource']);
+jPantry.controller('jPantryShoppingListCntrl', ['$scope', 'jPantryShoppingListService',
+function($scope, jPantryShoppingListService) {
+	$scope.shoppingList = jPantryShoppingListService.get({});
+}]);
 
-jpantryLookUpService.factory('jPantryService', ['$resource', function($resource) {
+var jPantryService = angular.module('jPantryService', ['ngResource']);
+
+jPantryService.factory('jPantryLookUpService', ['$resource', function($resource) {
 	return $resource('/JPantry/rest/item/find/:upcCode', {upcCode: '@upcCode'});
 }]);
 
-jpantryLookUpService.factory('jPantryItemIntake', ['$resource', function($resource) {
+jPantryService.factory('jPantryItemIntake', ['$resource', function($resource) {
 	return $resource('/JPantry/rest/item/in/:upcCode/:quantity', {upcCode: '@upcCode', quantity: '@quantity'});
 }]);
 
-jpantryLookUpService.factory('jPantryItemOutbound', ['$resource', function($resource) {
+jPantryService.factory('jPantryItemOutbound', ['$resource', function($resource) {
 	return $resource('/JPantry/rest/item/out/:upcCode/:quantity', {upcCode: '@upcCode', quantity: '@quantity'});
+}]);
+
+jPantryService.factory('jPantryShoppingListService', ['$resource', function($resource) {
+	return $resource('/JPantry/rest/item/find/shopping', {});
 }]);

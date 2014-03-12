@@ -4,7 +4,7 @@
   		<title>JPantry</title>
   		<link rel="stylesheet" href="css/main.css">
   		<script src="js/jquery/jquery-1.11.0.min.js"></script>
-  		<script src="js/angularjs/angular.min.js"></script>
+  		<script src="js/angularjs/angular.js"></script>
   		<script src="js/angularjs/angular-resource.min.js"></script>
   		<script src="js/jpantry/jpantry.js"></script>
 	</head>
@@ -46,6 +46,14 @@
 					</tr>
 				</table>
 			</div>
+		</div>
+		
+		<div ng-controller="jPantryShoppingListCntrl">
+			<ul>
+				<li ng-repeat="shoppingItem in shoppingList">
+			    	{{shoppingItem.id}} - {{shoppingItem.upcCode}} - {{shoppingItem.name}}
+				</li>
+			</ul>
 		</div>
 	</body>
 </html>

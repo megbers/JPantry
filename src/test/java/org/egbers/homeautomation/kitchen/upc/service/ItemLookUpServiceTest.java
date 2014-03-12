@@ -6,6 +6,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.egbers.homeautomation.kitchen.upc.dao.ItemExternalDAO;
 import org.egbers.homeautomation.kitchen.upc.dao.ItemLocalDAO;
 import org.egbers.homeautomation.kitchen.upc.domain.Item;
@@ -27,12 +30,14 @@ public class ItemLookUpServiceTest {
 	private String upcCode;
 	private Item item;
 	private Integer quantity;
+	private List<Item> itemList;
 	
 	@Before
 	public void setUp() {
 		upcCode = "UPC Code";
 		item = new Item();
 		quantity = 0;
+		itemList = new ArrayList<Item>();
 	}
 	
 	@Test
@@ -130,8 +135,6 @@ public class ItemLookUpServiceTest {
 		assertEquals(new Integer(10), actual.getQuantity());
 	}
 	
-	
-	
 	@Test
 	public void itemOutboundShouldUpdateQuantityWhenNonZero() {
 		item.setQuantity(2);
@@ -167,4 +170,35 @@ public class ItemLookUpServiceTest {
 		
 		assertEquals(new Integer(0), actual.getQuantity());
 	}
+
+	@Test
+	public void getShoppingListShouldReturnListOfItems() throws Exception {
+		when(itemLocalDAO.findCurrentShoppingList()).thenReturn(itemList);
+
+		List<Item> actual = service.getShoppingList();
+
+		verify(itemLocalDAO).findCurrentShoppingList();
+		assertEquals(itemList, actual);
+	}
+	
+	@Test
+	public void getInventoryShouldReturnListOfItems() throws Exception {
+		when(itemLocalDAO.findCurrentInventory()).thenReturn(itemList);
+
+		List<Item> actual = service.getInventory();
+
+		verify(itemLocalDAO).findCurrentInventory();
+		assertEquals(itemList, actual);
+	}
+	
+	@Test
+	public void getAllItemsShouldReturnListOfItems() throws Exception {
+		when(itemLocalDAO.findAll()).thenReturn(itemList);
+
+		List<Item> actual = service.getAllItems();
+
+		verify(itemLocalDAO).findAll();
+		assertEquals(itemList, actual);
+	}
+
 }
