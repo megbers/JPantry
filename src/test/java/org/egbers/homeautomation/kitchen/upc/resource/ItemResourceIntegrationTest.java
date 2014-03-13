@@ -1,17 +1,16 @@
 package org.egbers.homeautomation.kitchen.upc.resource;
 
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
 import javax.ws.rs.core.Response;
 
-import junit.framework.Assert;
-
 import org.egbers.homeautomation.kitchen.upc.dao.ItemLocalDAO;
 import org.egbers.homeautomation.kitchen.upc.domain.Item;
+import org.egbers.homeautomation.kitchen.upc.integration.IntegrationTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,6 +20,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class) 
 @ContextConfiguration(locations="classpath:applicationContext-Test.xml") 
 @TransactionConfiguration(defaultRollback=true,transactionManager="transactionManager") 
+@Category(IntegrationTest.class)
 public class ItemResourceIntegrationTest {
 	@Autowired
 	private ItemResource itemResource;

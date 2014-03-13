@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Thu Mar 13 15:28:26 EDT 2014:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.1 - (1458268): instance a816c00e-0144-bcea-c597-0000054ab0d8 
-on database directory memory:C:\Users\U23773\Desktop\personal\JPantry\dataSource with class loader sun.misc.Launcher$AppClassLoader@1567f4bf 
+Thu Mar 13 16:50:42 EDT 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.1 - (1458268): instance a816c00e-0144-bd36-158a-000006c61338 
+on database directory memory:C:\Users\U23773\Desktop\personal\JPantry\dataSource with class loader sun.misc.Launcher$AppClassLoader@837e21f 
 Loaded from file:/C:/Users/U23773/.m2/repository/org/apache/derby/derby/10.10.1.1/derby-10.10.1.1.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.7.0_25-b17
@@ -13,5 +13,5 @@ derby.system.home=null
 derby.stream.error.method=org.springframework.jdbc.datasource.embedded.OutputStreamFactory.getNoopOutputStream
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Thu Mar 13 15:28:28 EDT 2014:
-Shutting down instance a816c00e-0144-bcea-c597-0000054ab0d8 on database directory memory:C:\Users\U23773\Desktop\personal\JPantry\dataSource with class loader sun.misc.Launcher$AppClassLoader@1567f4bf 
+Thu Mar 13 16:50:45 EDT 2014:
+Shutting down instance a816c00e-0144-bd36-158a-000006c61338 on database directory memory:C:\Users\U23773\Desktop\personal\JPantry\dataSource with class loader sun.misc.Launcher$AppClassLoader@837e21f 
