@@ -19,10 +19,6 @@
 	
 	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 	
-    <bean id="fileBasedUPCListDAO" class="org.egbers.homeautomation.kitchen.upc.output.FileBasedUPCListDAO"/>    
-    <bean id="derbyBasedUPCListDAO" class="org.egbers.homeautomation.kitchen.upc.output.DerbyBasedUPCListDAO"/>
-    
-    
     <bean id="connectionUtil" class="org.egbers.homeautomation.kitchen.upc.net.ConnectionUtil">
         <property name="serviceURL" value="${upcdatabaseApi}/${apiKey}/"/>
     </bean>
