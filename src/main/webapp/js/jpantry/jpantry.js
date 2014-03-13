@@ -4,9 +4,11 @@ jPantry.controller('jPantryCntrl', ['$scope', 'jPantryLookUpService', 'jPantryIt
 function($scope, jPantryLookUpService, jPantryItemIntake, jPantryItemOutbound) {
 	
 	var quantityTextField = angular.element('#quantityTextField');
+	var onListCheckbox = angular.element('#onListCheckbox');
+	$scope.scanType = 'lookup';
 	
 	$scope.upcCodeKeyPress = function(event) {
-		if (event.which==13) {
+		if (event.which == 13) {
     		if($scope.scanType == 'lookup') {
 				$scope.item = jPantryLookUpService.get({upcCode: $scope.upcCode});
 			} else {
@@ -16,11 +18,11 @@ function($scope, jPantryLookUpService, jPantryItemIntake, jPantryItemOutbound) {
 	}
 	
 	$scope.quantityKeyPress = function(event) {
-		if (event.which==13) {
+		if (event.which == 13) {
 			if($scope.scanType == 'in') {
 				$scope.item = jPantryItemIntake.get({upcCode: $scope.upcCode, quantity: $scope.quantity});
 			} else if($scope.scanType == 'out') {
-				$scope.item = jPantryItemOutbound.get({upcCode: $scope.upcCode, quantity: $scope.quantity});
+				$scope.item = jPantryItemOutbound.get({upcCode: $scope.upcCode, quantity: $scope.quantity, onList: $scope.onList});
 			}
 		}
 	}
@@ -30,6 +32,12 @@ function($scope, jPantryLookUpService, jPantryItemIntake, jPantryItemOutbound) {
 			quantityTextField.parent().hide();
 	   } else {
 			quantityTextField.parent().show();
+	   }
+	   
+	   if(scanType === 'out') {
+	   		onListCheckbox.parent().show();
+	   } else {
+	   		onListCheckbox.parent().hide();
 	   }
 	});
 			
@@ -61,7 +69,7 @@ jPantryService.factory('jPantryItemIntake', ['$resource', function($resource) {
 }]);
 
 jPantryService.factory('jPantryItemOutbound', ['$resource', function($resource) {
-	return $resource('/JPantry/rest/item/out/:upcCode/:quantity', {upcCode: '@upcCode', quantity: '@quantity'});
+	return $resource('/JPantry/rest/item/out/:upcCode/:quantity/:onList', {upcCode: '@upcCode', quantity: '@quantity', onList: '@onList'});
 }]);
 
 jPantryService.factory('jPantryShoppingListService', ['$resource', function($resource) {

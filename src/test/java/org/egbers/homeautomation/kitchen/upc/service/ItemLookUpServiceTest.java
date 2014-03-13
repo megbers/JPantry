@@ -2,6 +2,7 @@ package org.egbers.homeautomation.kitchen.upc.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -15,6 +16,7 @@ import org.egbers.homeautomation.kitchen.upc.domain.Item;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -31,6 +33,7 @@ public class ItemLookUpServiceTest {
 	private Item item;
 	private Integer quantity;
 	private List<Item> itemList;
+	private Boolean onList;
 	
 	@Before
 	public void setUp() {
@@ -38,6 +41,7 @@ public class ItemLookUpServiceTest {
 		item = new Item();
 		quantity = 0;
 		itemList = new ArrayList<Item>();
+		onList = true;
 	}
 	
 	@Test
@@ -136,15 +140,30 @@ public class ItemLookUpServiceTest {
 	}
 	
 	@Test
+	public void itemIntakeShouldNotThrowExceptionAndSetNameToUpdateRequiredWhenItemIsNotFound() {
+		when(itemLocalDAO.findByUPC(upcCode)).thenReturn(null);
+		when(itemExternalDAO.findByUPC(upcCode)).thenReturn(null);
+		
+		ArgumentCaptor<Item> itemCaptor = ArgumentCaptor.forClass(Item.class);
+		
+		service.itemIntake(upcCode, quantity);
+		verify(itemLocalDAO).save(itemCaptor.capture());
+		
+		assertEquals("N/A - Item not found", itemCaptor.getAllValues().get(0).getName());
+		assertEquals(upcCode, itemCaptor.getAllValues().get(0).getUpc());
+	}
+	
+	@Test
 	public void itemOutboundShouldUpdateQuantityWhenNonZero() {
 		item.setQuantity(2);
 		quantity = 1;
 		when(itemLocalDAO.findByUPC(upcCode)).thenReturn(item);
 		when(itemLocalDAO.save(item)).thenReturn(item);
 		
-		Item actual = service.itemOutbound(upcCode, quantity);
+		Item actual = service.itemOutbound(upcCode, quantity, onList);
 		
 		assertEquals(new Integer(1), actual.getQuantity());
+		assertTrue(actual.getOnList());
 	}
 	
 	@Test
@@ -154,21 +173,37 @@ public class ItemLookUpServiceTest {
 		when(itemLocalDAO.findByUPC(upcCode)).thenReturn(item);
 		when(itemLocalDAO.save(item)).thenReturn(item);
 		
-		Item actual = service.itemOutbound(upcCode, quantity);
+		Item actual = service.itemOutbound(upcCode, quantity, onList);
 		
 		assertEquals(new Integer(0), actual.getQuantity());
+		assertTrue(actual.getOnList());
 	}
 	 
 	@Test
-	public void itemIntakeShouldSetToZeroWhenItemQuantityIsNull() {
+	public void itemOutboundShouldSetToZeroWhenItemQuantityIsNull() {
 		item.setQuantity(null);
 		quantity = 10;
 		when(itemLocalDAO.findByUPC(upcCode)).thenReturn(item);
 		when(itemLocalDAO.save(item)).thenReturn(item);
 		
-		Item actual = service.itemOutbound(upcCode, quantity);
+		Item actual = service.itemOutbound(upcCode, quantity, onList);
 		
 		assertEquals(new Integer(0), actual.getQuantity());
+		assertTrue(actual.getOnList());
+	}
+	
+	@Test
+	public void itemOutboundShouldNotThrowExceptionAndSetNameToUpdateRequiredWhenItemIsNotFound() {
+		when(itemLocalDAO.findByUPC(upcCode)).thenReturn(null);
+		when(itemExternalDAO.findByUPC(upcCode)).thenReturn(null);
+		
+		ArgumentCaptor<Item> itemCaptor = ArgumentCaptor.forClass(Item.class);
+		
+		service.itemOutbound(upcCode, quantity, onList);
+		verify(itemLocalDAO).save(itemCaptor.capture());
+		
+		assertEquals("N/A - Item not found", itemCaptor.getAllValues().get(0).getName());
+		assertEquals(upcCode, itemCaptor.getAllValues().get(0).getUpc());
 	}
 
 	@Test

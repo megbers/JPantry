@@ -16,7 +16,7 @@
 				<label for="outScanType">Out</label>
 				<input type="radio" id="outScanType" ng-model="scanType" value="out" /><br>
 				<label for="lookUpScanType">Look Up</label>
-				<input type="radio" id="lookUpScanType" ng-model="scanType" value="lookup" checked="true" /><br>
+				<input type="radio" id="lookUpScanType" ng-model="scanType" value="lookup" /><br>
 				
 				<label for="upcCodeTextField">UPC Code</label>
 				<input type="text" name="upcCode" id="upcCodeTextField" ng-model="upcCode" ng-keypress="upcCodeKeyPress($event)" /><br>
@@ -24,6 +24,10 @@
 				<div class="quantityFormRow">
 					<label for="quantityTextField">Quantity</label>
 					<input type="text" name="quantity" id="quantityTextField" ng-model="quantity" ng-keypress="quantityKeyPress($event)" value="1" /><br>
+				</div>
+				<div class="onListFormRow">
+					<label for="onListCheckbox">Quantity</label>
+					<input type="checkbox" id="onListCheckbox" name="onList" ng-model="onList" value="true"><br>
 				</div>
 			</form>
 			<div>

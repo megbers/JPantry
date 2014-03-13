@@ -1,16 +1,15 @@
 package org.egbers.homeautomation.kitchen.upc.domain;
 
-import static org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion.*;
-
+import static org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion.ALWAYS;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "item", catalog = "jpantry")
@@ -23,9 +22,8 @@ public class Item {
 	private Integer quantity;
 	private Boolean onList;
 
-	@GenericGenerator(name = "generator", strategy = "increment")
 	@Id
-	@GeneratedValue(generator = "generator")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
 	public Long getId() {
 		return id;

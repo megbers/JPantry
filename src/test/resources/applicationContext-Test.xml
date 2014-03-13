@@ -20,10 +20,11 @@
 	<context:component-scan base-package="org.egbers" />
 	<context:annotation-config />
 	
+	<context:property-placeholder location="classpath:application.properties" />
 	<util:properties id="properties" location="classpath:application.properties"/>
 	
 	<import resource="applicationContext-dataSource-Test.xml"/>
-	<import resource="applicationContext-sessionFactory.xml"/>
+	<import resource="applicationContext-sessionFactory-Test.xml"/>
 	<import resource="applicationContext-services.xml"/>
 	
 </beans>      

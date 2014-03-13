@@ -27,6 +27,7 @@ public class ItemResourceTest {
 	private Item item;
 	private Integer quantity;
 	private List<Item> items;
+	private Boolean onList;
 
 	@Before
 	public void setUp() {
@@ -34,6 +35,7 @@ public class ItemResourceTest {
 		quantity = 0;
 		item = new Item();
 		items = new ArrayList<Item>();
+		onList = true;
 	}
 
 	@Test
@@ -72,9 +74,9 @@ public class ItemResourceTest {
 	
 	@Test
 	public void outboundItemShouldReturnResponse() throws Exception {
-		when(itemLookUpService.itemOutbound(upcCode, quantity)).thenReturn(item);
+		when(itemLookUpService.itemOutbound(upcCode, quantity, onList)).thenReturn(item);
 
-		Response response = resource.itemOutbound(upcCode, quantity);
+		Response response = resource.itemOutbound(upcCode, quantity, onList);
 
 		assertEquals(item, response.getEntity());
 	}
@@ -82,9 +84,9 @@ public class ItemResourceTest {
 	// TODO Come up with some good error handling
 	@Test(expected = RuntimeException.class)
 	public void outboundItemShouldThrowExceptionWhenServiceThrowsException() throws Exception {
-		when(itemLookUpService.itemOutbound(upcCode, quantity)).thenThrow(new RuntimeException());
+		when(itemLookUpService.itemOutbound(upcCode, quantity, onList)).thenThrow(new RuntimeException());
 
-		resource.itemOutbound(upcCode, quantity);
+		resource.itemOutbound(upcCode, quantity, onList);
 	}
 	
 	@Test

@@ -66,10 +66,10 @@ public class ItemResource {
 	}
 	
 	@GET
-	@Path("/out/{upcCode}/{quantity}")
+	@Path("/out/{upcCode}/{quantity}/{onList}")
 	@Produces(APPLICATION_JSON)
-	public Response itemOutbound(@PathParam("upcCode") String upcCode, @PathParam("quantity") Integer quantity) {
-		Item item = itemLookUpService.itemOutbound(upcCode, quantity);
+	public Response itemOutbound(@PathParam("upcCode") String upcCode, @PathParam("quantity") Integer quantity, @PathParam("onList") Boolean onList) {
+		Item item = itemLookUpService.itemOutbound(upcCode, quantity, onList);
 		return Response.status(Status.OK).type(APPLICATION_JSON).entity(item).build();
 	}
 	
