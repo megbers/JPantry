@@ -2,7 +2,7 @@ var jPantry = angular.module('jPantry', ['ngResource', 'jPantryService']);
 
 jPantry.controller('jPantryCntrl', ['$scope', 'jPantryLookUpService', 'jPantryItemIntake', 'jPantryItemOutbound', 
 function($scope, jPantryLookUpService, jPantryItemIntake, jPantryItemOutbound) {
-	
+	var upcCodeTextField = angular.element('#upcCodeTextField');
 	var quantityTextField = angular.element('#quantityTextField');
 	var onListCheckbox = angular.element('#onListCheckbox');
 	$scope.scanType = 'lookup';
@@ -11,6 +11,7 @@ function($scope, jPantryLookUpService, jPantryItemIntake, jPantryItemOutbound) {
 		if (event.which == 13) {
     		if($scope.scanType == 'lookup') {
 				$scope.item = jPantryLookUpService.get({upcCode: $scope.upcCode});
+				$scope.upcCode = '';
 			} else {
 				quantityTextField.focus();
 			}
@@ -24,6 +25,9 @@ function($scope, jPantryLookUpService, jPantryItemIntake, jPantryItemOutbound) {
 			} else if($scope.scanType == 'out') {
 				$scope.item = jPantryItemOutbound.get({upcCode: $scope.upcCode, quantity: $scope.quantity, onList: $scope.onList});
 			}
+			$scope.upcCode = '';
+			$scope.quantity = '';
+			upcCodeTextField.focus();
 		}
 	}
 	
@@ -43,6 +47,9 @@ function($scope, jPantryLookUpService, jPantryItemIntake, jPantryItemOutbound) {
 			
 }]);
 
+
+
+
 jPantry.controller('jPantryInventoryListCntrl', ['$scope', 'jPantryInventoryListService',
 function($scope, jPantryInventoryListService) {
 	$scope.inventoryList = jPantryInventoryListService.query({});
@@ -57,6 +64,9 @@ jPantry.controller('jPantryAllListCntrl', ['$scope', 'jPantryAllListService',
 function($scope, jPantryAllListService) {
 	$scope.allList = jPantryAllListService.query({});
 }]);
+
+
+
 
 var jPantryService = angular.module('jPantryService', ['ngResource']);
 

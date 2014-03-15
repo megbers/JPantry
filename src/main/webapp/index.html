@@ -53,6 +53,7 @@
 		</div>
 		
 		<div ng-controller="jPantryShoppingListCntrl">
+			<h3>Shopping List</h3>
 			<ul>
 				<li ng-repeat="shoppingItem in shoppingList">
 			    	{{shoppingItem.id}} - {{shoppingItem.upc}} - {{shoppingItem.name}} 
@@ -61,6 +62,7 @@
 		</div>
 		
 		<div ng-controller="jPantryInventoryListCntrl">
+			<h3>Inventory List</h3>
 			<ul>
 				<li ng-repeat="inventoryItem in inventoryList">
 			    	{{inventoryItem.id}} - {{inventoryItem.upc}} - {{inventoryItem.name}}
@@ -69,6 +71,7 @@
 		</div>
 		
 		<div ng-controller="jPantryAllListCntrl">
+			<h3>All List</h3>
 			<ul>
 				<li ng-repeat="allItem in allList">
 			    	{{allItem.id}} - {{allItem.upc}} - {{allItem.name}}
