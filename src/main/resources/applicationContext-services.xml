@@ -29,5 +29,10 @@
 			<ref bean="sessionFactory" />
 		</property>
     </bean>
+    <bean id="itemHistoryDAO" class="org.egbers.homeautomation.kitchen.upc.dao.ItemHistoryDAO">
+    	<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+    </bean>
     <bean id="itemLookUpService" class="org.egbers.homeautomation.kitchen.upc.service.ItemLookUpService"/>
 </beans>        
