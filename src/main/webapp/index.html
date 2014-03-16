@@ -2,7 +2,8 @@
 	<head>
 		<meta charset="utf-8">
   		<title>JPantry</title>
-  		<link rel="stylesheet" href="css/main.css">
+  		<link rel="stylesheet" href="css/main.css" />
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css" />
   		<script src="js/jquery/jquery-1.11.0.min.js"></script>
   		<script src="js/angularjs/angular.js"></script>
   		<script src="js/angularjs/angular-resource.min.js"></script>
@@ -10,27 +11,33 @@
 	</head>
 	<body>
 		<div ng-controller="jPantryCntrl">
-			<form>
-				<label for="inScanType">In</label>
-				<input type="radio" id="inScanType" ng-model="scanType" value="in" /><br>
-				<label for="outScanType">Out</label>
-				<input type="radio" id="outScanType" ng-model="scanType" value="out" /><br>
-				<label for="lookUpScanType">Look Up</label>
-				<input type="radio" id="lookUpScanType" ng-model="scanType" value="lookup" /><br>
-				
-				<label for="upcCodeTextField">UPC Code</label>
-				<input type="text" name="upcCode" id="upcCodeTextField" ng-model="upcCode" ng-keypress="upcCodeKeyPress($event)" /><br>
-				
-				<div class="quantityFormRow">
-					<label for="quantityTextField">Quantity</label>
-					<input type="text" name="quantity" id="quantityTextField" ng-model="quantity" ng-keypress="quantityKeyPress($event)" value="1" /><br>
-				</div>
-				<div class="onListFormRow">
-					<label for="onListCheckbox">On List</label>
-					<input type="checkbox" id="onListCheckbox" name="onList" ng-model="onList" value="true"><br>
-				</div>
+			<form class="pure-form">
+                <fieldset>
+                    <div>
+                        <label for="inScanType">In</label>
+                        <input type="radio" id="inScanType" ng-model="scanType" value="in" />
+                        <label for="outScanType">Out</label>
+                        <input type="radio" id="outScanType" ng-model="scanType" value="out" />
+                        <label for="lookUpScanType">Look Up</label>
+                        <input type="radio" id="lookUpScanType" ng-model="scanType" value="lookup" />
+                    </div>
+
+                    <div class="pure-form-stacked">
+                        <label for="upcCodeTextField">UPC Code</label>
+                        <input type="text" name="upcCode" id="upcCodeTextField" ng-model="upcCode" ng-keypress="upcCodeKeyPress($event)" />
+                    </div>
+
+                    <div class="quantityFormRow pure-form-stacked">
+                        <label for="quantityTextField">Quantity</label>
+                        <input type="text" name="quantity" id="quantityTextField" ng-model="quantity" ng-keypress="quantityKeyPress($event)" value="1" />
+                    </div>
+                    <div class="onListFormRow">
+                        <label for="onListCheckbox">Add To Shopping List</label>
+                        <input type="checkbox" id="onListCheckbox" name="onList" ng-model="onList" value="true">
+                    </div>
+                </fieldset>
 			</form>
-			<div>
+			<div style="display: none">
 				<table>
 					<tr>
 						<th>Id</th>
@@ -52,31 +59,82 @@
 			</div>
 		</div>
 		
-		<div ng-controller="jPantryShoppingListCntrl">
+		<div ng-controller="jPantryShoppingListCntrl" id="jPantryShoppingListCntrl">
 			<h3>Shopping List</h3>
-			<ul>
-				<li ng-repeat="shoppingItem in shoppingList">
-			    	{{shoppingItem.id}} - {{shoppingItem.upc}} - {{shoppingItem.name}} 
-				</li>
-			</ul>
+            <table class="pure-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>UPC</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>On List</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="shoppingItem in shoppingList">
+                        <td>{{shoppingItem.id}}</td>
+                        <td>{{shoppingItem.upc}}</td>
+                        <td>{{shoppingItem.name}}</td>
+                        <td>{{shoppingItem.description}}</td>
+                        <td>{{shoppingItem.onList}}</td>
+                        <td>{{shoppingItem.quantity}}</td>
+                    </tr>
+                </tbody>
+            </table>
 		</div>
 		
-		<div ng-controller="jPantryInventoryListCntrl">
+		<div ng-controller="jPantryInventoryListCntrl" id="jPantryInventoryListCntrl">
 			<h3>Inventory List</h3>
-			<ul>
-				<li ng-repeat="inventoryItem in inventoryList">
-			    	{{inventoryItem.id}} - {{inventoryItem.upc}} - {{inventoryItem.name}}
-				</li>
-			</ul>
+            <table class="pure-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>UPC</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>On List</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="inventoryItem in inventoryList">
+                        <td>{{inventoryItem.id}}</td>
+                        <td>{{inventoryItem.upc}}</td>
+                        <td>{{inventoryItem.name}}</td>
+                        <td>{{inventoryItem.description}}</td>
+                        <td>{{inventoryItem.onList}}</td>
+                        <td>{{inventoryItem.quantity}}</td>
+                    </tr>
+                </tbody>
+            </table>
 		</div>
 		
-		<div ng-controller="jPantryAllListCntrl">
+		<div ng-controller="jPantryAllListCntrl" id="jPantryAllListCntrl">
 			<h3>All List</h3>
-			<ul>
-				<li ng-repeat="allItem in allList">
-			    	{{allItem.id}} - {{allItem.upc}} - {{allItem.name}}
-				</li>
-			</ul>
+            <table class="pure-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>UPC</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>On List</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="allItem in allList">
+                        <td>{{allItem.id}}</td>
+                        <td>{{allItem.upc}}</td>
+                        <td>{{allItem.name}}</td>
+                        <td>{{allItem.description}}</td>
+                        <td>{{allItem.onList}}</td>
+                        <td>{{allItem.quantity}}</td>
+                    </tr>
+                </tbody>
+            </table>
 		</div>
 	</body>
 </html>
