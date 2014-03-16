@@ -1,10 +1,17 @@
 package org.egbers.homeautomation.kitchen.upc.service;
 
+import static org.egbers.homeautomation.kitchen.upc.domain.ItemHistory.INTAKE;
+import static org.egbers.homeautomation.kitchen.upc.domain.ItemHistory.LOOKUP;
+import static org.egbers.homeautomation.kitchen.upc.domain.ItemHistory.OUTBOUND;
+
+import java.util.Date;
 import java.util.List;
 
 import org.egbers.homeautomation.kitchen.upc.dao.ItemExternalDAO;
+import org.egbers.homeautomation.kitchen.upc.dao.ItemHistoryDAO;
 import org.egbers.homeautomation.kitchen.upc.dao.ItemLocalDAO;
 import org.egbers.homeautomation.kitchen.upc.domain.Item;
+import org.egbers.homeautomation.kitchen.upc.domain.ItemHistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,37 +20,48 @@ public class ItemLookUpService {
 	@Autowired
 	private ItemExternalDAO itemExternalDAO;
 	@Autowired
-	private ItemLocalDAO itemLocalDAO; 
+	private ItemLocalDAO itemLocalDAO;
+	@Autowired
+	private ItemHistoryDAO itemHistoryDAO;
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
 	public Item findItemByUPC(String upcCode) {
 		Item item = itemLocalDAO.findByUPC(upcCode);
 		if(item == null) {
 			item = itemExternalDAO.findByUPC(upcCode);
-			item = saveItem(item);
+			item = saveItem(item, LOOKUP);
 		}
 		return item;
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
-	public Item saveItem(Item item) {
+	public Item saveItem(Item item, String event) {
 		if(item != null) {
 			item = itemLocalDAO.save(item);
+			logHistory(item, event);
 		}
 		return item;
+	}
+
+	private void logHistory(Item item, String event) {
+		ItemHistory history = new ItemHistory();
+		history.setDate(new Date());
+		history.setEvent(event);
+		history.setUpc(item.getUpc());
+		itemHistoryDAO.save(history);
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
 	public Item itemIntake(String upcCode, Integer quantity) {
-		return updateQuantity(upcCode, quantity, false, 1);
+		return updateQuantity(upcCode, quantity, false, 1, INTAKE);
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
 	public Item itemOutbound(String upcCode, Integer quantity, Boolean onList) {
-		return updateQuantity(upcCode, quantity, onList, -1);
+		return updateQuantity(upcCode, quantity, onList, -1, OUTBOUND);
 	}
 	
-	private Item updateQuantity(String upcCode, Integer quantity, Boolean onList, int sign) {
+	private Item updateQuantity(String upcCode, Integer quantity, Boolean onList, int sign, String event) {
 		//TODO This will cause an extra DB update. Not a HUGE deal in this low volume application
 		Item item = findItemByUPC(upcCode);//itemLocalDAO.findByUPC(upcCode);
 		item = initItem(upcCode, item);
@@ -53,7 +71,7 @@ public class ItemLookUpService {
 		Integer newQuantity = tempQuantity > 0 ? tempQuantity : 0; 
 		item.setQuantity(newQuantity);
 		
-		return saveItem(item);
+		return saveItem(item, event);
 	}
 
 	private Item initItem(String upcCode, Item item) {

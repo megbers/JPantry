@@ -31,7 +31,7 @@
 		<property name="annotatedClasses">
 			<list>
 				<value>org.egbers.homeautomation.kitchen.upc.domain.Item</value>
-				<!-- value>org.egbers.homeautomation.kitchen.upc.domain.ItemHistory</value -->
+				<value>org.egbers.homeautomation.kitchen.upc.domain.ItemHistory</value>
 			</list>
 		</property>
 	</bean>

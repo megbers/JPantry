@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 
-public class ItemLocalDAO extends HibernateDaoSupport{
+public class ItemLocalDAO extends HibernateDaoSupport {
 	@Transactional(propagation=Propagation.REQUIRED)
 	public Item save(Item transientInstance) {
 		try {

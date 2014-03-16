@@ -1,8 +1,11 @@
 package org.egbers.homeautomation.kitchen.upc.service;
 
+import static org.egbers.homeautomation.kitchen.upc.domain.ItemHistory.INTAKE;
+import static org.egbers.homeautomation.kitchen.upc.domain.ItemHistory.OUTBOUND;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -11,8 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.egbers.homeautomation.kitchen.upc.dao.ItemExternalDAO;
+import org.egbers.homeautomation.kitchen.upc.dao.ItemHistoryDAO;
 import org.egbers.homeautomation.kitchen.upc.dao.ItemLocalDAO;
 import org.egbers.homeautomation.kitchen.upc.domain.Item;
+import org.egbers.homeautomation.kitchen.upc.domain.ItemHistory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +32,8 @@ public class ItemLookUpServiceTest {
 	private ItemLocalDAO itemLocalDAO;
 	@Mock
 	private ItemExternalDAO itemExternalDAO;
+	@Mock
+	private ItemHistoryDAO itemHistoryDAO;
 	@InjectMocks
 	private ItemLookUpService service;
 	private String upcCode;
@@ -87,19 +94,20 @@ public class ItemLookUpServiceTest {
 	public void saveShouldNotCallSaveWhenItemIsNull() {
 		when(itemLocalDAO.save(null)).thenReturn(null);
 		
-		Item actual = service.saveItem(null);
+		Item actual = service.saveItem(null, null);
 		
 		verify(itemLocalDAO, never()).save(null);
 		assertNull(actual);
 	}
 	
 	@Test
-	public void saveShouldCallSaveOnDAO() {
+	public void saveShouldCallSaveOnDAOs() {
 		when(itemLocalDAO.save(item)).thenReturn(item);
 		
-		Item actual = service.saveItem(item);
+		Item actual = service.saveItem(item, null);
 		
 		verify(itemLocalDAO).save(item);
+		verify(itemHistoryDAO).save(any(ItemHistory.class));
 		assertEquals(item, actual);
 	}
 	
@@ -143,14 +151,21 @@ public class ItemLookUpServiceTest {
 	public void itemIntakeShouldNotThrowExceptionAndSetNameToUpdateRequiredWhenItemIsNotFound() {
 		when(itemLocalDAO.findByUPC(upcCode)).thenReturn(null);
 		when(itemExternalDAO.findByUPC(upcCode)).thenReturn(null);
+		item.setUpc(upcCode);
+		when(itemLocalDAO.save(any(Item.class))).thenReturn(item);
 		
 		ArgumentCaptor<Item> itemCaptor = ArgumentCaptor.forClass(Item.class);
+		ArgumentCaptor<ItemHistory> itemHistoryCaptor = ArgumentCaptor.forClass(ItemHistory.class);
 		
 		service.itemIntake(upcCode, quantity);
 		verify(itemLocalDAO).save(itemCaptor.capture());
+		verify(itemHistoryDAO).save(itemHistoryCaptor.capture());
 		
 		assertEquals("N/A - Item not found", itemCaptor.getAllValues().get(0).getName());
 		assertEquals(upcCode, itemCaptor.getAllValues().get(0).getUpc());
+		
+		assertEquals(upcCode, itemHistoryCaptor.getAllValues().get(0).getUpc());
+		assertEquals(INTAKE, itemHistoryCaptor.getAllValues().get(0).getEvent());
 	}
 	
 	@Test
@@ -196,14 +211,21 @@ public class ItemLookUpServiceTest {
 	public void itemOutboundShouldNotThrowExceptionAndSetNameToUpdateRequiredWhenItemIsNotFound() {
 		when(itemLocalDAO.findByUPC(upcCode)).thenReturn(null);
 		when(itemExternalDAO.findByUPC(upcCode)).thenReturn(null);
+		item.setUpc(upcCode);
+		when(itemLocalDAO.save(any(Item.class))).thenReturn(item);
 		
 		ArgumentCaptor<Item> itemCaptor = ArgumentCaptor.forClass(Item.class);
+		ArgumentCaptor<ItemHistory> itemHistoryCaptor = ArgumentCaptor.forClass(ItemHistory.class);
 		
 		service.itemOutbound(upcCode, quantity, onList);
 		verify(itemLocalDAO).save(itemCaptor.capture());
+		verify(itemHistoryDAO).save(itemHistoryCaptor.capture());
 		
 		assertEquals("N/A - Item not found", itemCaptor.getAllValues().get(0).getName());
 		assertEquals(upcCode, itemCaptor.getAllValues().get(0).getUpc());
+		
+		assertEquals(upcCode, itemHistoryCaptor.getAllValues().get(0).getUpc());
+		assertEquals(OUTBOUND, itemHistoryCaptor.getAllValues().get(0).getEvent());
 	}
 
 	@Test
