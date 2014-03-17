@@ -16,11 +16,13 @@ public class ItemHistory {
 	public static final String LOOKUP = "LOOKUP";
 	public static final String INTAKE = "INTAKE";
 	public static final String OUTBOUND = "OUTBOUND";
+	public static final String ADMIN_UPDATE = "ADMIN_UPDATE";
 	
 	private Long id;
 	private String upc;
 	private Date date;
 	private String event;
+	private Integer quantity;
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -59,5 +61,15 @@ public class ItemHistory {
 	public void setEvent(String event) {
 		this.event = event;
 	}
+
+	@Column(name = "quantity")
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+	
 	
 }

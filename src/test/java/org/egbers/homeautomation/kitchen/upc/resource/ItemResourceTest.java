@@ -1,5 +1,6 @@
 package org.egbers.homeautomation.kitchen.upc.resource;
 
+import static org.egbers.homeautomation.kitchen.upc.domain.ItemHistory.ADMIN_UPDATE;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -139,5 +140,21 @@ public class ItemResourceTest {
 
 		resource.findShoppingList();
 	}
+	
+	@Test
+	public void updateItemShouldReturnUpdatedItem() throws Exception {
+		when(itemLookUpService.saveItem(item, ADMIN_UPDATE)).thenReturn(item);
+		
+		Response response = resource.updateItem(item);
+		assertEquals(item, response.getEntity());
+	}
+	
+	// TODO Come up with some good error handling
+		@Test(expected = RuntimeException.class)
+		public void updateItemShouldThrowExceptionWhenServiceThrowsException() throws Exception {
+			when(itemLookUpService.saveItem(item, ADMIN_UPDATE)).thenThrow(new RuntimeException());
+
+			resource.updateItem(item);
+		}
 	
 }

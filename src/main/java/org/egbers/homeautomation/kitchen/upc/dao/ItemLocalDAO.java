@@ -59,7 +59,7 @@ public class ItemLocalDAO extends HibernateDaoSupport {
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Item> findAll() {
 		try {
-			return getHibernateTemplate().find("from org.egbers.homeautomation.kitchen.upc.domain.Item");
+			return getHibernateTemplate().find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model order by model.name asc");
 		} catch (RuntimeException re) {
 			throw re;
 		}
@@ -70,7 +70,7 @@ public class ItemLocalDAO extends HibernateDaoSupport {
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Item> findCurrentInventory() {
 		try {
-			return getHibernateTemplate().find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.quantity > 0");
+			return getHibernateTemplate().find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.quantity > 0 order by model.name asc");
 		} catch (RuntimeException re) {
 			throw re;
 		}
@@ -80,7 +80,7 @@ public class ItemLocalDAO extends HibernateDaoSupport {
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Item> findCurrentShoppingList() {
 		try {
-			return getHibernateTemplate().find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.onList = true");
+			return getHibernateTemplate().find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.onList = true order by model.name asc");
 		} catch (RuntimeException re) {
 			throw re;
 		}

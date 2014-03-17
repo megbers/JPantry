@@ -1,10 +1,13 @@
 package org.egbers.homeautomation.kitchen.upc.resource;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static org.egbers.homeautomation.kitchen.upc.domain.ItemHistory.ADMIN_UPDATE;
 
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -23,6 +26,15 @@ public class ItemResource {
 
 	@Autowired
 	private ItemLookUpService itemLookUpService;
+	
+	@PUT
+	@Path("/update")
+	@Consumes(APPLICATION_JSON)
+	@Produces(APPLICATION_JSON)
+	public Response updateItem(Item item) {
+		Item updatedItem = itemLookUpService.saveItem(item, ADMIN_UPDATE);
+		return Response.status(Status.OK).type(APPLICATION_JSON).entity(updatedItem).build();
+	}
 	
 	@GET
 	@Path("/find/{upcCode}")

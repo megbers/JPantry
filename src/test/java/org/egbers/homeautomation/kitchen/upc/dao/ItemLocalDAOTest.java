@@ -106,45 +106,45 @@ public class ItemLocalDAOTest {
 	@Test
 	public void findAllShouldFindItems() {
 		List<Item> list = new ArrayList<Item>();
-		when(template.find("from org.egbers.homeautomation.kitchen.upc.domain.Item")).thenReturn(list);
+		when(template.find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model order by model.name asc")).thenReturn(list);
 		List<Item> actual = dao.findAll();
-		verify(template).find("from org.egbers.homeautomation.kitchen.upc.domain.Item");
+		verify(template).find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model order by model.name asc");
 		assertEquals(actual, list);
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void findAllShouldThrowExceptionIfRaised() {
-		doThrow(new RuntimeException()).when(template).find("from org.egbers.homeautomation.kitchen.upc.domain.Item");
+		doThrow(new RuntimeException()).when(template).find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model order by model.name asc");
 		dao.findAll();
 	}
 	
 	@Test
 	public void findCurrentInventoryShouldFindItems() {
 		List<Item> list = new ArrayList<Item>();
-		when(template.find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.quantity > 0")).thenReturn(list);
+		when(template.find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.quantity > 0 order by model.name asc")).thenReturn(list);
 		List<Item> actual = dao.findCurrentInventory();
-		verify(template).find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.quantity > 0");
+		verify(template).find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.quantity > 0 order by model.name asc");
 		assertEquals(actual, list);
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void findCurrentInventoryShouldThrowExceptionIfRaised() {
-		doThrow(new RuntimeException()).when(template).find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.quantity > 0");
+		doThrow(new RuntimeException()).when(template).find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.quantity > 0 order by model.name asc");
 		dao.findCurrentInventory();
 	}
 			
 	@Test
 	public void findCurrentShoppingListShouldFindItems() {
 		List<Item> list = new ArrayList<Item>();
-		when(template.find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.onList = true")).thenReturn(list);
+		when(template.find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.onList = true order by model.name asc")).thenReturn(list);
 		List<Item> actual = dao.findCurrentShoppingList();
-		verify(template).find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.onList = true");
+		verify(template).find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.onList = true order by model.name asc");
 		assertEquals(actual, list);
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void findCurrentShoppingListShouldThrowExceptionIfRaised() {
-		doThrow(new RuntimeException()).when(template).find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.onList = true");
+		doThrow(new RuntimeException()).when(template).find("from org.egbers.homeautomation.kitchen.upc.domain.Item as model where model.onList = true order by model.name asc");
 		dao.findCurrentShoppingList();
 	}
 	

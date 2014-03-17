@@ -1,12 +1,14 @@
 package org.egbers.homeautomation.kitchen.upc.service;
 
 import static org.egbers.homeautomation.kitchen.upc.domain.ItemHistory.INTAKE;
+import static org.egbers.homeautomation.kitchen.upc.domain.ItemHistory.LOOKUP;
 import static org.egbers.homeautomation.kitchen.upc.domain.ItemHistory.OUTBOUND;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -70,12 +72,18 @@ public class ItemLookUpServiceTest {
 	}
 	
 	@Test
-	public void shouldReturnNullWhenNotFoundLocallyOrExternally() {
+	public void shouldReturnDetaulsWhenNotFoundLocallyOrExternally() {
 		when(itemLocalDAO.findByUPC(upcCode)).thenReturn(null);
 		when(itemExternalDAO.findByUPC(upcCode)).thenReturn(null);
+		when(itemLocalDAO.save(any(Item.class))).thenReturn(item);
+		
+		ArgumentCaptor<Item> itemCaptor = ArgumentCaptor.forClass(Item.class);
 		
 		Item actual = service.findItemByUPC(upcCode);
-		assertNull(actual);
+		
+		verify(itemLocalDAO).save(itemCaptor.capture());
+		assertEquals(actual, item);
+		assertEquals("N/A - Item not found", itemCaptor.getAllValues().get(0).getName());
 	}
 	
 	@Test
@@ -158,14 +166,17 @@ public class ItemLookUpServiceTest {
 		ArgumentCaptor<ItemHistory> itemHistoryCaptor = ArgumentCaptor.forClass(ItemHistory.class);
 		
 		service.itemIntake(upcCode, quantity);
-		verify(itemLocalDAO).save(itemCaptor.capture());
-		verify(itemHistoryDAO).save(itemHistoryCaptor.capture());
+		verify(itemLocalDAO, times(2)).save(itemCaptor.capture());
+		verify(itemHistoryDAO, times(2)).save(itemHistoryCaptor.capture());
 		
 		assertEquals("N/A - Item not found", itemCaptor.getAllValues().get(0).getName());
 		assertEquals(upcCode, itemCaptor.getAllValues().get(0).getUpc());
 		
 		assertEquals(upcCode, itemHistoryCaptor.getAllValues().get(0).getUpc());
-		assertEquals(INTAKE, itemHistoryCaptor.getAllValues().get(0).getEvent());
+		assertEquals(LOOKUP, itemHistoryCaptor.getAllValues().get(0).getEvent());
+		
+		assertEquals(upcCode, itemHistoryCaptor.getAllValues().get(1).getUpc());
+		assertEquals(INTAKE, itemHistoryCaptor.getAllValues().get(1).getEvent());
 	}
 	
 	@Test
@@ -218,14 +229,17 @@ public class ItemLookUpServiceTest {
 		ArgumentCaptor<ItemHistory> itemHistoryCaptor = ArgumentCaptor.forClass(ItemHistory.class);
 		
 		service.itemOutbound(upcCode, quantity, onList);
-		verify(itemLocalDAO).save(itemCaptor.capture());
-		verify(itemHistoryDAO).save(itemHistoryCaptor.capture());
+		verify(itemLocalDAO, times(2)).save(itemCaptor.capture());
+		verify(itemHistoryDAO, times(2)).save(itemHistoryCaptor.capture());
 		
 		assertEquals("N/A - Item not found", itemCaptor.getAllValues().get(0).getName());
 		assertEquals(upcCode, itemCaptor.getAllValues().get(0).getUpc());
 		
 		assertEquals(upcCode, itemHistoryCaptor.getAllValues().get(0).getUpc());
-		assertEquals(OUTBOUND, itemHistoryCaptor.getAllValues().get(0).getEvent());
+		assertEquals(LOOKUP, itemHistoryCaptor.getAllValues().get(0).getEvent());
+		
+		assertEquals(upcCode, itemHistoryCaptor.getAllValues().get(1).getUpc());
+		assertEquals(OUTBOUND, itemHistoryCaptor.getAllValues().get(1).getEvent());
 	}
 
 	@Test

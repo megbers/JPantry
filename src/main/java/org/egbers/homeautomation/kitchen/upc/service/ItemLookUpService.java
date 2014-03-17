@@ -29,6 +29,9 @@ public class ItemLookUpService {
 		Item item = itemLocalDAO.findByUPC(upcCode);
 		if(item == null) {
 			item = itemExternalDAO.findByUPC(upcCode);
+			if(item == null) {
+				item = initItem(upcCode, item);
+			}
 			item = saveItem(item, LOOKUP);
 		}
 		return item;

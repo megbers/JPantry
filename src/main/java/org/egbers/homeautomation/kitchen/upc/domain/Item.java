@@ -78,4 +78,23 @@ public class Item {
 		this.onList = onList;
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder
+		.append("ID: ")
+		.append(id)
+		.append("| UPC:")
+		.append(upc)
+		.append("| Name: ")
+		.append(name)
+		.append("| Description: ")
+		.append(description)
+		.append("| Quantity: ")
+		.append(quantity)
+		.append("| On List: ")
+		.append(onList);
+		
+		return builder.toString();
+	}
 }

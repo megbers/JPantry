@@ -29,6 +29,9 @@ public class ItemResourceIntegrationTest {
 	
 	@Test
 	public void itemResourceLookUpShouldReturnItemAlreadyInDatabase() throws Exception {
+		List<Item> originalItems = itemLocalDAO.findAll();
+		int itemCount = originalItems.size();
+		
 		String upcCode = "1234567890";
 		Response response = itemResource.findByUPC(upcCode);
 		Item returnedItem = (Item) response.getEntity();
@@ -36,11 +39,14 @@ public class ItemResourceIntegrationTest {
 		assertEquals("Test Name", returnedItem.getName());
 		
 		List<Item> items = itemLocalDAO.findAll();
-		assertEquals(1, items.size());
+		assertEquals(itemCount, items.size());
 	}
 	
 	@Test
 	public void itemResourceLookUpShouldAddAndReturnItemFromExternalDAO() throws Exception {
+		List<Item> originalItems = itemLocalDAO.findAll();
+		int itemCount = originalItems.size();
+		
 		String upcCode = "02838423";
 		Response response = itemResource.findByUPC(upcCode);
 		Item returnedItem = (Item) response.getEntity();
@@ -48,7 +54,22 @@ public class ItemResourceIntegrationTest {
 		assertEquals("Marlboro Lights", returnedItem.getName());
 		
 		List<Item> items = itemLocalDAO.findAll();
-		assertEquals(2, items.size());
+		assertEquals(itemCount+1, items.size());
+	}
+	
+	@Test
+	public void itemResourceLookUpShouldReturnDefaultItemWhenNoItemsFoundLocallyOrExternally() throws Exception {
+		List<Item> originalItems = itemLocalDAO.findAll();
+		int itemCount = originalItems.size();
+		
+		String upcCode = "02266901";
+		Response response = itemResource.findByUPC(upcCode);
+		Item returnedItem = (Item) response.getEntity();
+		assertEquals("02266901", returnedItem.getUpc());
+		assertEquals("N/A - Item not found", returnedItem.getName());
+		
+		List<Item> items = itemLocalDAO.findAll();
+		assertEquals(itemCount+1, items.size());
 	}
 	
 }
