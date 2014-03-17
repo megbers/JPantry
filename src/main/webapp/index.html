@@ -3,7 +3,7 @@
 		<meta charset="utf-8">
   		<title>JPantry</title>
   		<link rel="stylesheet" href="css/main.css" />
-        <link rel="stylesheet" href="css/pure-min.css" />
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css" />
   		<script src="js/jquery/jquery-1.11.0.min.js"></script>
   		<script src="js/angularjs/angular.js"></script>
   		<script src="js/angularjs/angular-resource.min.js"></script>
@@ -82,12 +82,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="shoppingItem in shoppingList">
+                    <tr ng-repeat="shoppingItem in shoppingList" ng-class-odd="'oddRowColor'" ng-class-even="'evenRowColor'">
                         <td>{{shoppingItem.id}}</td>
                         <td>{{shoppingItem.upc}}</td>
                         <td>{{shoppingItem.name}}</td>
                         <td>{{shoppingItem.description}}</td>
-                        <td><img src="images/blue_check_round.jpg" ng-show="shoppingItem.onList" style="width: 20px; height: 20px;"/></td>
+                        <td><img src="images/green_check.jpg" ng-show="shoppingItem.onList" style="width: 20px; height: 20px;"/></td>
                         <td>{{shoppingItem.quantity}}</td>
                     </tr>
                 </tbody>
@@ -108,12 +108,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="inventoryItem in inventoryList">
+                    <tr ng-repeat="inventoryItem in inventoryList" ng-class-odd="'oddRowColor'" ng-class-even="'evenRowColor'">
                         <td>{{inventoryItem.id}}</td>
                         <td>{{inventoryItem.upc}}</td>
                         <td>{{inventoryItem.name}}</td>
                         <td>{{inventoryItem.description}}</td>
-                        <td><img src="images/blue_check_round.jpg" ng-show="inventoryItem.onList" style="width: 20px; height: 20px;"/></td>
+                        <td><img src="images/green_check.jpg" ng-show="inventoryItem.onList" style="width: 20px; height: 20px;"/></td>
                         <td>{{inventoryItem.quantity}}</td>
                     </tr>
                 </tbody>
@@ -139,7 +139,7 @@
                         <td>{{allItem.upc}}</td>
                         <td>{{allItem.name}}</td>
                         <td>{{allItem.description}}</td>
-                        <td><img src="images/blue_check_round.jpg" ng-show="allItem.onList" style="width: 20px; height: 20px;"/></td>
+                        <td><img src="images/green_check.jpg" ng-show="allItem.onList" style="width: 20px; height: 20px;"/></td>
                         <td>{{allItem.quantity}}</td>
                     </tr>
                 </tbody>

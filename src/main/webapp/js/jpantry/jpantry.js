@@ -53,6 +53,8 @@ function($scope, $rootScope, jPantryLookUpService, jPantryItemIntake, jPantryIte
 	$scope.updateItem = function() {
 		jPantryItemUpdate.update($scope.item, function(data) {
 			$rootScope.$broadcast('refreshAll', {});
+			$rootScope.$broadcast('refreshShopping', {});
+            $rootScope.$broadcast('refreshInventory', {});
 		});
 	}
 
