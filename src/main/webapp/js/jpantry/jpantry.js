@@ -1,10 +1,11 @@
 var jPantry = angular.module('jPantry', ['ngResource', 'jPantryService']);
 
-jPantry.controller('jPantryCntrl', ['$scope', '$rootScope', 'jPantryLookUpService', 'jPantryItemIntake', 'jPantryItemOutbound',
-function($scope, $rootScope, jPantryLookUpService, jPantryItemIntake, jPantryItemOutbound) {
+jPantry.controller('jPantryCntrl', ['$scope', '$rootScope', 'jPantryLookUpService', 'jPantryItemIntake', 'jPantryItemOutbound', 'jPantryItemUpdate',
+function($scope, $rootScope, jPantryLookUpService, jPantryItemIntake, jPantryItemOutbound, jPantryItemUpdate) {
 	var upcCodeTextField = angular.element('#upcCodeTextField');
 	var quantityTextField = angular.element('#quantityTextField');
 	var onListCheckbox = angular.element('#onListCheckbox');
+	var adminUpdateFields = angular.element('#jPantryAdminUpdateFields');
 
     var allList = angular.element('#jPantryAllListCntrl');
     var shoppingList = angular.element('#jPantryShoppingListCntrl');
@@ -48,6 +49,12 @@ function($scope, $rootScope, jPantryLookUpService, jPantryItemIntake, jPantryIte
 			upcCodeTextField.focus();
 		}
 	}
+	
+	$scope.updateItem = function() {
+		jPantryItemUpdate.update($scope.item, function(data) {
+			$rootScope.$broadcast('refreshAll', {});
+		});
+	}
 
     $scope.$watch('scanType', function(scanType) {
        allList.hide();
@@ -57,7 +64,9 @@ function($scope, $rootScope, jPantryLookUpService, jPantryItemIntake, jPantryIte
        if(scanType === 'lookup') {
            quantityTextField.parent().hide();
            allList.show();
+		   adminUpdateFields.show();
 	   } else {
+		   adminUpdateFields.hide();
            quantityTextField.parent().show();
 	   }
 	   
@@ -72,6 +81,10 @@ function($scope, $rootScope, jPantryLookUpService, jPantryItemIntake, jPantryIte
            inventoryList.show();
        }
 	});
+	
+	$scope.$on('updateItemFromList', function(event, item) {
+        $scope.item = item;
+    });
 			
 }]);
 
@@ -80,6 +93,7 @@ function($scope, $rootScope, jPantryLookUpService, jPantryItemIntake, jPantryIte
 
 jPantry.controller('jPantryInventoryListCntrl', ['$scope', 'jPantryInventoryListService', 'jPantryItemIntake', 
 function($scope, jPantryInventoryListService, jPantryItemIntake) {
+
     $scope.$on('refreshInventory', function(event, data) {
         refreshInventory();
     });
@@ -104,8 +118,13 @@ function($scope, jPantryShoppingListService) {
     refreshShopping()
 }]);
 
-jPantry.controller('jPantryAllListCntrl', ['$scope', 'jPantryAllListService',
-function($scope, jPantryAllListService) {
+jPantry.controller('jPantryAllListCntrl', ['$scope', '$rootScope', 'jPantryAllListService',
+function($scope, $rootScope, jPantryAllListService) {
+	// Make these controllers children of a common parent and inherit this method
+	$scope.itemSelected = function (item) {
+		$rootScope.$broadcast('updateItemFromList', item);
+	}
+
     $scope.$on('refreshAll', function(event, data) {
         refreshAll();
     });
@@ -121,6 +140,10 @@ function($scope, jPantryAllListService) {
 
 
 var jPantryService = angular.module('jPantryService', ['ngResource']);
+
+jPantryService.factory('jPantryItemUpdate', ['$resource', function($resource) {
+	return $resource('/JPantry/rest/item/update', {}, {update: {method: 'PUT', data: {}, isArray: false}});
+}]);
 
 jPantryService.factory('jPantryLookUpService', ['$resource', function($resource) {
 	return $resource('/JPantry/rest/item/find/:upcCode', {upcCode: '@upcCode'});

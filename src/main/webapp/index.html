@@ -10,7 +10,7 @@
   		<script src="js/jpantry/jpantry.js"></script>
 	</head>
 	<body>
-		<div ng-controller="jPantryCntrl">
+		<div ng-controller="jPantryCntrl" class="inputDiv">
 			<form class="pure-form">
                 <fieldset>
                     <div>
@@ -35,28 +35,37 @@
                         <label for="onListCheckbox">Add To Shopping List</label>
                         <input type="checkbox" id="onListCheckbox" name="onList" ng-model="onList" value="true">
                     </div>
+					
+					<div id="jPantryAdminUpdateFields">
+						<table class="pure-table inputTable">
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>UPC</th>
+									<th>Name</th>
+									<th>Description</th>
+									<th>On List</th>
+									<th>Quantity</th>
+									<th>&nbsp;</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>{{item.id}}</td>
+									<td style="width: 117px;">{{item.upc}}<!--input type="text" ng-model="item.upc" style="width: 155px;"/--></td>
+									<td><input type="text" ng-model="item.name" /></td>
+									<td><input type="text" ng-model="item.description" /></td>
+									<td><input type="checkbox" ng-model="item.onList" value="true" /></td>
+									<td><input type="text" ng-model="item.quantity" style="width: 65px;"/></td>
+									<td><input type="button" ng-click="updateItem()" value="Update Item"/></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
                 </fieldset>
 			</form>
-			<div style="display: none">
-				<table>
-					<tr>
-						<th>Id</th>
-						<th>UPC</th>
-						<th>Name</th>
-						<th>Description</th>
-						<th>On List</th>
-						<th>Quantity</th>
-					</tr>
-					<tr>
-						<td>{{item.id}}</td>
-						<td>{{item.upc}}</td>
-						<td>{{item.name}}</td>
-						<td>{{item.description}}</td>
-						<td>{{item.onList}}</td>
-						<td>{{item.quantity}}</td>
-					</tr>
-				</table>
-			</div>
+			
 		</div>
 		
 		<div ng-controller="jPantryShoppingListCntrl" id="jPantryShoppingListCntrl">
@@ -78,7 +87,7 @@
                         <td>{{shoppingItem.upc}}</td>
                         <td>{{shoppingItem.name}}</td>
                         <td>{{shoppingItem.description}}</td>
-                        <td>{{shoppingItem.onList}}</td>
+                        <td><img src="images/blue_check_round.jpg" ng-show="shoppingItem.onList" style="width: 20px; height: 20px;"/></td>
                         <td>{{shoppingItem.quantity}}</td>
                     </tr>
                 </tbody>
@@ -104,7 +113,7 @@
                         <td>{{inventoryItem.upc}}</td>
                         <td>{{inventoryItem.name}}</td>
                         <td>{{inventoryItem.description}}</td>
-                        <td>{{inventoryItem.onList}}</td>
+                        <td><img src="images/blue_check_round.jpg" ng-show="inventoryItem.onList" style="width: 20px; height: 20px;"/></td>
                         <td>{{inventoryItem.quantity}}</td>
                     </tr>
                 </tbody>
@@ -125,12 +134,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="allItem in allList">
+                    <tr ng-repeat="allItem in allList" ng-click="itemSelected(allItem)" ng-class-odd="'oddRowColor'" ng-class-even="'evenRowColor'">
                         <td>{{allItem.id}}</td>
                         <td>{{allItem.upc}}</td>
                         <td>{{allItem.name}}</td>
                         <td>{{allItem.description}}</td>
-                        <td>{{allItem.onList}}</td>
+                        <td><img src="images/blue_check_round.jpg" ng-show="allItem.onList" style="width: 20px; height: 20px;"/></td>
                         <td>{{allItem.quantity}}</td>
                     </tr>
                 </tbody>

@@ -1,0 +1,19 @@
+.evenRowColor {
+	background-color: #D6F5FF;
+}
+
+.oddRowColor {
+	background-color: #FFFFFF;
+}
+
+.inputDiv {
+	border:2px solid;
+	border-radius:25px;
+	background-color: #D6F5FF;
+	padding: 10px;
+	width: 930px;
+}
+
+.inputTable {
+	background-color: #FFFFFF;
+}
